@@ -12,7 +12,7 @@ However, from a content creators perspective there are certain things that make 
 * If you want an immutable address for your blog for sharing you can have one, the [IPNS](https://ipfs.io/ipns/docs.ipfs.io/guides/concepts/ipns/) hash of your node. However, that's still a hash...
 * Everytime your blog changes, your blog root will have a new hash that needs to be published to IPNS.
 
-With LibreBlogging we try to come over these hassles and make it simple and easy to have a blog on IPFS.
+With LibreBlogging we try to come over these hassles and make it simple and easy to have a blog on IPFS while staying as decentralized as possible.
 
 ## What is it about?
 
