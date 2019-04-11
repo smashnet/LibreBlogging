@@ -11,7 +11,6 @@ License: MIT License
 '''
 
 import config
-import requests
 import json
 
 def DBtoDict(res):
