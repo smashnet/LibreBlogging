@@ -1,4 +1,6 @@
 # LibreBlogging
+Ideas and issue status: https://miro.com/app/board/o9J_kxu6Y1o=/
+
 LibreBlogging is a hassle-free tool that enables you to set up a simple blog on [IPFS](https://ipfs.io) in no time. The benefits of publishing on IPFS are:
 
 * Content is _not censorable_, as content is not hosted in a single place or by a company.
