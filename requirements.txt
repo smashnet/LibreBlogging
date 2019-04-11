@@ -1,0 +1,5 @@
+redis
+CherryPy
+routes
+Jinja2
+requests

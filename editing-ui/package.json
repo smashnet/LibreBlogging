@@ -1,0 +1,25 @@
+{
+  "name": "libreblogging",
+  "version": "0.0.1",
+  "description": "LibreBlogging is a hassle-free tool that enables you to set up a simple blog on IPFS in no time.",
+  "main": "index.js",
+  "scripts": {
+    "start": "faucet --watch --sourcemaps",
+    "compile": "faucet --compact",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smashnet/LibreBlogging.git"
+  },
+  "author": "Nicolas Inden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smashnet/LibreBlogging/issues"
+  },
+  "homepage": "https://github.com/smashnet/LibreBlogging#readme",
+  "dependencies": {
+    "faucet-pipeline-js": ">=1.1.1",
+    "faucet-pipeline-sass": ">=1.1.0"
+  }
+}
