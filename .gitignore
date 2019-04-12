@@ -1,6 +1,4 @@
 *.DS_Store
-editing-ui/static/js
-editing-ui/static/css
 editing-ui/node_modules
 
 # Byte-compiled / optimized / DLL files

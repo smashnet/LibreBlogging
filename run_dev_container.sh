@@ -7,7 +7,8 @@ fi
 
 # Install node modules if they are not already there
 if [ ! -d "node_modules" ]; then
-  docker exec -ti -w /app/editing-ui libreblogging-dev  npm install
+  docker exec -ti -w /app/editing-ui libreblogging-dev npm install
+  docker exec -it -w /app/editing-ui/node_modules/tabler-ui/ libreblogging-dev npm install
 fi
 
 # npm start

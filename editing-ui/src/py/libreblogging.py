@@ -28,4 +28,9 @@ class LibreBlogging(object):
               action='index',
               conditions=dict(method=['GET']))
 
+    d.connect('home_index', '/empty',
+              controller=HomeController(),
+              action='empty',
+              conditions=dict(method=['GET']))
+
     return d

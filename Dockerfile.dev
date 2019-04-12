@@ -3,7 +3,7 @@ MAINTAINER Nicolas Inden <nicolas@inden.one>
 
 WORKDIR /app
 
-RUN apk add zlib-dev jpeg-dev build-base nodejs npm
+RUN apk add zlib-dev jpeg-dev build-base nodejs npm ncurses
 
 COPY requirements.txt ./
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt

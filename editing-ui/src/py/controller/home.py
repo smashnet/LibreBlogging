@@ -20,3 +20,8 @@ class HomeController(BaseController):
   def index(self):
     template_vars = {"bodyclass": "class=main"}
     return self.render_template("home/index.html", template_vars)
+
+  @cherrypy.expose
+  def empty(self):
+    template_vars = {"bodyclass": "class=main"}
+    return self.render_template("home/empty.html", template_vars)

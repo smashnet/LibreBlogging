@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="LibreBlogging - Your IPFS blog companion">
     {% block head %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
     <link rel="stylesheet" href="/static/css/app.css" />
   </head>
-  <body {{ bodyclass }}>
+  <body>
+    <div class="page">
+      <div class="flex-fill">
+        {% include 'header.html' %}
 
-    <header>
-      Header
-    </header>
+        {% block content %}{% endblock %}
+      </div>
 
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+    {% include 'footer.html' %}
 
-    <footer class="text-muted">
-      Footer
-    </footer>
+    </div>
 
+    <script src="/static/js/require.min.js"></script>
+    <script>
+      requirejs.config({
+          baseUrl: '.'
+      });
+    </script>
+    <script src="/static/js/dashboard.js"></script>
     <script src="/static/js/app.js"></script>
     {% block extrajs %}{% endblock %}
   </body>
