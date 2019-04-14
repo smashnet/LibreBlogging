@@ -11,15 +11,18 @@
   <body>
     <div class="page">
       <div class="flex-fill">
-        {% include 'header.html' %}
 
-        {% block content %}{% endblock %}
-      </div>
+        <!-- Header -->
+{% include 'header.html' %}
 
-    {% include 'footer.html' %}
+        <!-- Content -->
+{% block content %}{% endblock %}
+      </div> <!-- close div flex-fill -->
+      <!-- Footer -->
+{% include 'footer.html' %}
+    </div> <!-- close div page -->
 
-    </div>
-
+    <!-- JavaScript -->
     <script src="/static/js/require.min.js"></script>
     <script>
       requirejs.config({
