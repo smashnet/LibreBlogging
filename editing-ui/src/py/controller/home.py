@@ -15,6 +15,7 @@ import markdown
 import uuid
 import time
 from datetime import datetime
+import pytz
 
 from controller.base import BaseController
 
@@ -34,7 +35,10 @@ class HomeController(BaseController):
     template_vars["entry_uuid"] = str(uuid.uuid4())
     ts = int(time.time())
     template_vars["entry_ts"] = ts
-    template_vars["entry_date"] = datetime.utcfromtimestamp(ts).strftime('%T - %B %d, %Y')
+    tz = pytz.timezone("Europe/Berlin") # Make this variable and add to "Settings" page
+    dt_utc = datetime.fromtimestamp(ts)
+    dt_loc = dt_utc.astimezone(tz)
+    template_vars["entry_date"] = dt_loc.strftime('%T - %B %d, %Y, %Z')
     #TODO: Write content to markdown file
     #TODO: Start process to generate static content for IPFS deployment
     return self.render_template("home/new_entry_posted.html", template_vars)
