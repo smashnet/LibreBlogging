@@ -40,7 +40,7 @@ class LibreBlogging(object):
 
     d.connect('page_settings', '/settings',
               controller=HomeController(),
-              action='coming_soon',
+              action='settings',
               conditions=dict(method=['GET']))
 
     d.connect('page_ipfs', '/ipfs',

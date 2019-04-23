@@ -43,6 +43,10 @@ class HomeController(BaseController):
     #TODO: Start process to generate static content for IPFS deployment
     return self.render_template("home/new_entry_posted.html", template_vars)
 
+  def settings(self):
+    template_vars = {}
+    return self.render_template("home/settings.html", template_vars)
+
   def coming_soon(self):
     template_vars = {}
     return self.render_template("home/coming_soon.html", template_vars)

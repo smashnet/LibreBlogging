@@ -1,5 +1,7 @@
 *.DS_Store
 editing-ui/node_modules
+content/
+scripts/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
