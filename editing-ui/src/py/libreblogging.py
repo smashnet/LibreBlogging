@@ -23,12 +23,32 @@ class LibreBlogging(object):
   def getRoutesDispatcher(self):
     d = cherrypy.dispatch.RoutesDispatcher()
 
-    d.connect('home_index', '/',
+    d.connect('page_index', '/',
               controller=HomeController(),
               action='index',
               conditions=dict(method=['GET']))
 
-    d.connect('home_index', '/empty',
+    d.connect('get_entry', '/posts/{entry_id}',
+              controller=HomeController(),
+              action='get_entry',
+              conditions=dict(method=['GET']))
+
+    d.connect('post_entry', '/posts',
+              controller=HomeController(),
+              action='post_entry',
+              conditions=dict(method=['POST']))
+
+    d.connect('page_settings', '/settings',
+              controller=HomeController(),
+              action='coming_soon',
+              conditions=dict(method=['GET']))
+
+    d.connect('page_ipfs', '/ipfs',
+              controller=HomeController(),
+              action='coming_soon',
+              conditions=dict(method=['GET']))
+
+    d.connect('empty', '/empty',
               controller=HomeController(),
               action='empty',
               conditions=dict(method=['GET']))

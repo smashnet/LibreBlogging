@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+
+            <div class="page-header">
+              <h1 class="page-title">
+                New entry posted!
+              </h1>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <ul class="list-group card-list-group">
+                    <li class="list-group-item py-5">
+                      <div class="media">
+                        <div class="media-body">
+                          <div class="media-heading">
+                            <small class="float-right text-muted">{{ entry_date }}</small>
+                            <h4>Preview <i class="fas fa-eye"></i></h4>
+                            <hr>
+                          </div>
+                          <div>
+                            {{ entry_text|safe }}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <ul class="list-group card-list-group">
+                    <li class="list-group-item py-5">
+                      <div class="media">
+                        <div class="media-body">
+                          <div class="media-heading">
+                            <small class="float-right text-muted">No function, coming soon!</small>
+                            <h4>Deployment Status <i class="fas fa-sync-alt"></i></h4>
+                            <hr>
+                          </div>
+                          <ul class="list-group list-group-horizontal-md">
+                            <li class="list-group-item list-group-item-success">Generating static website <i class="fas fa-check"></i></li>
+                            <li class="list-group-item list-group-item-primary">Deploying on IPFS <i class="fas fa-sync-alt"></i></li>
+                            <li class="list-group-item list-group-item-secondary">Updating IPNS <i class="far fa-clock"></i></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+{% endblock %}
