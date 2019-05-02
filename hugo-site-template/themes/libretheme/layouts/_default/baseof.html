@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  {{- partial "head.html" . -}}
+  <body>
+    <div class="page">
+      <div class="flex-fill">
+        {{- partial "header.html" . -}}
+        {{- block "main" . }}{{- end }}
+      </div>
+      {{- partial "footer.html" . -}}
+    </div>
+    {{- partial "scripts.html" . -}}
+  </body>
+</html>

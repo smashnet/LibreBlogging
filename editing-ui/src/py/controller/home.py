@@ -31,7 +31,7 @@ class HomeController(BaseController):
 
   def post_entry(self, entry_text):
     #TODO: Check entry_text for malicious content (injections, etc... )!
-    template_vars = {"entry_text": markdown.markdown(entry_text)}
+    template_vars = {"entry_text": markdown.markdown(entry_text, extensions=['extra'])}
     template_vars["entry_uuid"] = str(uuid.uuid4())
     ts = int(time.time())
     template_vars["entry_ts"] = ts
@@ -41,7 +41,7 @@ class HomeController(BaseController):
     template_vars["entry_date"] = dt_loc.strftime('%T - %B %d, %Y, %Z')
     #TODO: Write content to markdown file
     #TODO: Start process to generate static content for IPFS deployment
-    return self.render_template("home/new_entry_posted.html", template_vars)
+    return self.render_template("home/new_entry_received.html", template_vars)
 
   def settings(self):
     template_vars = {}
