@@ -9,6 +9,7 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
 COPY editing-ui ./editing-ui
+COPY hugo-site-template ./hugo-site-template
 
 RUN cd editing-ui && npm install && npm run compile
 

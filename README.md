@@ -1,6 +1,23 @@
 # LibreBlogging
 Ideas and issue status: https://miro.com/app/board/o9J_kxu6Y1o=/
 
+## Usage
+
+### Development
+Use `Dockerfile.dev` to create an image for development on LibreBlogging:
+
+```shell
+./build_dev_image.sh
+./run_dev_container.sh
+```
+
+### Use LibreBlogging
+It's as simple as
+
+`docker-compose up`
+
+## What is it about?
+
 LibreBlogging is a hassle-free tool that enables you to set up a simple blog on [IPFS](https://ipfs.io) in no time. The benefits of publishing on IPFS are:
 
 * Content is _not censorable_, as content is not hosted in a single place or by a company.
@@ -15,7 +32,5 @@ However, from a content creators perspective there are certain things that make 
 * Everytime your blog changes, your blog root will have a new hash that needs to be published to IPNS.
 
 With LibreBlogging we try to come over these hassles and make it simple and easy to have a blog on IPFS while staying as decentralized as possible.
-
-## What is it about?
 
 ![](about.png)

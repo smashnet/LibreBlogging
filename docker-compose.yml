@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  libreblogging:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./hugo-site:/app/hugo-site
+    ports:
+      - 8080:8080
