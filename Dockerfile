@@ -12,6 +12,10 @@ COPY editing-ui ./editing-ui
 
 RUN cd editing-ui && npm install && npm run compile
 
+COPY entrypoint.sh ./
+
 EXPOSE 8080
 
-ENTRYPOINT [ "python", "./editing-ui/src/py/run.py" ]
+VOLUME ["/app/hugo-site"]
+
+ENTRYPOINT [ "./entrypoint.sh" ]

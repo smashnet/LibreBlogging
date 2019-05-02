@@ -8,6 +8,8 @@ RUN apk add zlib-dev jpeg-dev build-base nodejs npm ncurses hugo
 COPY requirements.txt ./
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
+COPY entrypoint.sh ./
+
 EXPOSE 8080
 
-ENTRYPOINT [ "python", "-u", "./editing-ui/src/py/run.py" ]
+ENTRYPOINT [ "./entrypoint.sh" ]

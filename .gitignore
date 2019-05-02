@@ -2,6 +2,7 @@
 editing-ui/node_modules
 content/
 scripts/
+hugo-site/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
