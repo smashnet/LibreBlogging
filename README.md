@@ -1,6 +1,8 @@
 # LibreBlogging
 Ideas and issue status: https://miro.com/app/board/o9J_kxu6Y1o=/
 
+There is still some way to go until we have a first basic functionality. If you just want to _use_ LibreBlogging please check back soon.
+
 ## Usage
 
 ### Development
