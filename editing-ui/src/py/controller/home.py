@@ -18,6 +18,7 @@ from datetime import datetime
 import pytz
 
 from controller.base import BaseController
+from externals import hugo_shell_actions
 
 @cherrypy.expose
 class HomeController(BaseController):
@@ -35,11 +36,14 @@ class HomeController(BaseController):
     template_vars["entry_uuid"] = str(uuid.uuid4())
     ts = int(time.time())
     template_vars["entry_ts"] = ts
-    tz = pytz.timezone("Europe/Berlin") # Make this variable and add to "Settings" page
+    tz = pytz.timezone("Europe/Berlin") #TODO: Make this variable and add to "Settings" page
     dt_utc = datetime.fromtimestamp(ts)
     dt_loc = dt_utc.astimezone(tz)
     template_vars["entry_date"] = dt_loc.strftime('%T - %B %d, %Y, %Z')
-    #TODO: Write content to markdown file
+    # Create new post file in hugo-site
+    hugo_shell_actions.hugo_create_post(template_vars["entry_uuid"])
+    # Write content to markdown file
+    hugo_shell_actions.hugo_append_markdown(template_vars["entry_uuid"], entry_text)
     #TODO: Start process to generate static content for IPFS deployment
     return self.render_template("home/new_entry_received.html", template_vars)
 

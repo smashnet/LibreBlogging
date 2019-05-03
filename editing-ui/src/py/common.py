@@ -12,6 +12,9 @@ License: MIT License
 
 import config
 import json
+import logging
+
+logger = logging.getLogger("LibreBlogging")
 
 def DBtoDict(res):
   descs = [desc[0] for desc in res.description]
