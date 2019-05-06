@@ -20,22 +20,20 @@
                     </div>
                   </form>
                 </div>
+                {% if posts|length > 0 %}
+                {% for post in posts %}
                 <div class="card">
                   <div class="card-body">
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                    {{ post.post|safe }}
                   </div>
                   <div class="card-footer">
-                    <small class="float-right text-muted">13:03 - May 02, 2019</small>
+                    <small class="float-right text-muted">{{ post.date }}</small>
                   </div>
                 </div>
-                <div class="card">
-                  <div class="card-body">
-                    Mein erster Post
-                  </div>
-                  <div class="card-footer">
-                    <small class="float-right text-muted">21:07 - May 01, 2019</small>
-                  </div>
-                </div>
+                {% endfor %}
+                {% else %}
+                <h3 class="text-muted text-center">No entries yet...</h3>
+                {% endif %}
               </div>
             </div>
           </div>

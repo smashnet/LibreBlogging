@@ -14,6 +14,9 @@ import config
 import json
 import logging
 
+HUGO_DIR = "./hugo-site/"
+HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
+
 logger = logging.getLogger("LibreBlogging")
 
 def DBtoDict(res):
