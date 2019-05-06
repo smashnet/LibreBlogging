@@ -46,7 +46,8 @@ def get_posts_from_files():
         if head_separators >= 2:
           post += line
 
-      res.append({"uuid": the_uuid, "date": datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ").strftime('%T - %B %d, %Y, %Z'), "post": markdown.markdown(post.strip(), extensions=['extra'])})
+      res.append({"uuid": the_uuid, "date": datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ"), "post": markdown.markdown(post.strip(), extensions=['extra'])})
+      res.sort(key=lambda post: post['date'], reverse=True)
       f.close()
 
   return res
