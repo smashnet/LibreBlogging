@@ -19,6 +19,10 @@ HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
 
 logger = logging.getLogger("LibreBlogging")
 
+def correct_post_datetime_tz(post):
+  post['date'] = post['date'].strftime('%T - %B %d, %Y, %Z')
+  return post
+  
 def DBtoDict(res):
   descs = [desc[0] for desc in res.description]
   item = res.fetchone()

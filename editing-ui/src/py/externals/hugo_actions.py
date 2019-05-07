@@ -2,6 +2,7 @@ import subprocess
 from os import listdir
 from os.path import isfile, join, basename
 from datetime import datetime
+import pytz
 import markdown
 
 import common
@@ -27,6 +28,7 @@ def get_posts_from_files():
   '''
   files = [join(common.HUGO_POSTS_DIR, f) for f in listdir(common.HUGO_POSTS_DIR) if (isfile(join(common.HUGO_POSTS_DIR, f)) and not f.startswith('.') and f.endswith('.md'))]
   res = []
+  tz = pytz.timezone('Europe/Berlin') #TODO: Make this variable and add to "Settings" page
   for current_file in files:
     with open(current_file, 'r') as f:
       the_uuid = basename(current_file).split('.')[0]
@@ -46,7 +48,9 @@ def get_posts_from_files():
         if head_separators >= 2:
           post += line
 
-      res.append({"uuid": the_uuid, "date": datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ"), "post": markdown.markdown(post.strip(), extensions=['extra'])})
+      dt_utc = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+      dt_loc = dt_utc.astimezone(tz)
+      res.append({"uuid": the_uuid, "date": dt_loc, "post": markdown.markdown(post.strip(), extensions=['extra'])})
       res.sort(key=lambda post: post['date'], reverse=True)
       f.close()
 

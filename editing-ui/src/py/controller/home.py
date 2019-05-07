@@ -19,6 +19,7 @@ import pytz
 
 from controller.base import BaseController
 from externals import hugo_actions
+import common
 
 @cherrypy.expose
 class HomeController(BaseController):
@@ -26,8 +27,7 @@ class HomeController(BaseController):
   def index(self):
     template_vars = {}
     # Read markdown files with posts
-    template_vars['posts'] = hugo_actions.get_posts_from_files()
-    print(template_vars['posts'])
+    template_vars['posts'] = [common.correct_post_datetime_tz(post) for post in hugo_actions.get_posts_from_files()]
     return self.render_template("home/index.html", template_vars)
 
   def get_entry(self, entry_id):
