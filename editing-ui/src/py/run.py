@@ -15,7 +15,6 @@ import sys
 
 import cherrypy
 
-import config
 from libreblogging import LibreBlogging
 from controller.pagenotfound import PageNotFoundController
 

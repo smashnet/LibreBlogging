@@ -14,12 +14,12 @@ import datetime
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-import config
+import common
 
 class BaseController(object):
 
   def render_template(self, path, template_vars=None):
-    fl = FileSystemLoader(config.VIEWS_PATH)
+    fl = FileSystemLoader(common.VIEWS_PATH)
     env = Environment(loader=fl, autoescape=select_autoescape(["html"]))
     template_vars = template_vars if template_vars else {}
     now = datetime.datetime.now()

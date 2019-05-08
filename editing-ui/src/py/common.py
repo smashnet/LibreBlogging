@@ -10,17 +10,43 @@ GPG-Fingerprint: A757 5741 FD1E 63E8 357D  48E2 3C68 AE70 B2F8 AA17
 License: MIT License
 '''
 
-import config
 import json
 import logging
+import os, os.path
+import time
+from datetime import datetime
+import pytz
+
+NAME = "editing-ui"
+VERSION = "0.0.1"
+DATA_DIR = os.path.abspath(os.getcwd()) + "/%s-data/" % NAME
+DB_STRING = DATA_DIR + "database.db"
+
+# Further service dependent configuration:
+PHOTO_DIR = DATA_DIR + "img/"
+PHOTO_THUMBS_DIR = DATA_DIR + "thumbs/"
+VIEWS_PATH = os.path.abspath(os.getcwd()) + "/editing-ui/src/views"
+try:
+  PUBLIC_URL = os.environ['VIRTUAL_HOST']
+except KeyError:
+  PUBLIC_URL = "localhost"
 
 HUGO_DIR = "./hugo-site/"
 HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
 
+DATE_FORMAT = "%B %d, %Y - %T %Z"
+
 logger = logging.getLogger("LibreBlogging")
 
+def get_datetime_tuple():
+  ts = int(time.time())
+  tz = pytz.timezone('Europe/Berlin') #TODO: Make this variable and add to "Settings" page
+  dt_utc = datetime.fromtimestamp(ts)
+  dt_loc = dt_utc.astimezone(tz)
+  return dt_loc, dt_loc.strftime(DATE_FORMAT)
+
 def correct_post_datetime_tz(post):
-  post['date'] = post['date'].strftime('%B %d, %Y - %T %Z')
+  post['date'] = post['date'].strftime(DATE_FORMAT)
   return post
 
 def DBtoDict(res):

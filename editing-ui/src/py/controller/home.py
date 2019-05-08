@@ -13,9 +13,6 @@ License: MIT License
 import cherrypy
 import markdown
 import uuid
-import time
-from datetime import datetime
-import pytz
 
 from controller.base import BaseController
 from externals import hugo_actions
@@ -33,16 +30,16 @@ class HomeController(BaseController):
   def get_entry(self, entry_id):
     return entry_id
 
+  def delete_entry(self, entry_id):
+    print("We should delete entry %s" % entry_id)
+    return
+
   def post_entry(self, entry_text):
     #TODO: Check entry_text for malicious content (injections, etc... )!
     template_vars = {'entry_text': markdown.markdown(entry_text, extensions=['extra'])}
     template_vars['entry_uuid'] = str(uuid.uuid4())
-    ts = int(time.time())
-    template_vars['entry_ts'] = ts
-    tz = pytz.timezone('Europe/Berlin') #TODO: Make this variable and add to "Settings" page
-    dt_utc = datetime.fromtimestamp(ts)
-    dt_loc = dt_utc.astimezone(tz)
-    template_vars['entry_date'] = dt_loc.strftime('%B %d, %Y - %T %Z')
+    dt_loc, dt_local_string = common.get_datetime_tuple()
+    template_vars['entry_date'] = dt_local_string
     # Create new post file in hugo-site
     hugo_actions.hugo_create_post(template_vars['entry_uuid'])
     # Write content to markdown file
@@ -56,6 +53,16 @@ class HomeController(BaseController):
   def coming_soon(self):
     template_vars = {}
     return self.render_template("home/coming_soon.html", template_vars)
+
+  def start_deploy(self):
+    template_vars = {}
+    template_vars['title'] = "Deployment started!"
+    return self.render_template("home/deploy_status.html", template_vars)
+
+  def deploy_status(self):
+    template_vars = {}
+    template_vars['title'] = "Deployment Progress"
+    return self.render_template("home/deploy_status.html", template_vars)
 
   def empty(self):
     template_vars = {}

@@ -33,6 +33,11 @@ class LibreBlogging(object):
               action='get_entry',
               conditions=dict(method=['GET']))
 
+    d.connect('delete_entry', '/posts/{entry_id}',
+              controller=HomeController(),
+              action='delete_entry',
+              conditions=dict(method=['DELETE']))
+
     d.connect('post_entry', '/posts',
               controller=HomeController(),
               action='post_entry',
@@ -46,6 +51,16 @@ class LibreBlogging(object):
     d.connect('page_ipfs', '/ipfs',
               controller=HomeController(),
               action='coming_soon',
+              conditions=dict(method=['GET']))
+
+    d.connect('start_deploy', '/deploy',
+              controller=HomeController(),
+              action='start_deploy',
+              conditions=dict(method=['POST']))
+
+    d.connect('deploy_status', '/deploy',
+              controller=HomeController(),
+              action='deploy_status',
               conditions=dict(method=['GET']))
 
     d.connect('empty', '/empty',
