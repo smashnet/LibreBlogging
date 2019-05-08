@@ -42,7 +42,7 @@ class HomeController(BaseController):
     tz = pytz.timezone('Europe/Berlin') #TODO: Make this variable and add to "Settings" page
     dt_utc = datetime.fromtimestamp(ts)
     dt_loc = dt_utc.astimezone(tz)
-    template_vars['entry_date'] = dt_loc.strftime('%T - %B %d, %Y, %Z')
+    template_vars['entry_date'] = dt_loc.strftime('%B %d, %Y - %T %Z')
     # Create new post file in hugo-site
     hugo_actions.hugo_create_post(template_vars['entry_uuid'])
     # Write content to markdown file

@@ -22,11 +22,9 @@
                 <div class="card">
                   <div class="card-body">
                     <small class="float-right text-muted">{{ post.date }}</small>
+                    <hr/>
                     {{ post.post|safe }}
                   </div>
-                  <!--<div class="card-footer">
-                    <small class="float-right text-muted">{{ post.date }}</small>
-                  </div>-->
                 </div>
                 {% endfor %}
                 {% else %}
