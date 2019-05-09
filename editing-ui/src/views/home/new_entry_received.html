@@ -18,12 +18,12 @@
                       <div class="media">
                         <div class="media-body">
                           <div class="media-heading">
-                            <small class="float-right text-muted">{{ entry_date }}</small>
+                            <small class="float-right text-muted">{{ vars.entry_date }}</small>
                             <h4>Preview <i class="fas fa-eye"></i></h4>
                             <hr>
                           </div>
                           <div>
-                            {{ entry_text | safe }}
+                            {{ vars.entry_text | safe }}
                           </div>
                           <hr />
                           <div class="btn-list text-right">

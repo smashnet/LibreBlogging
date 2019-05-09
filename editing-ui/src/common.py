@@ -16,6 +16,7 @@ import os, os.path
 import time
 from datetime import datetime
 import pytz
+import uuid
 
 NAME = "editing-ui"
 VERSION = "0.0.1"
@@ -48,6 +49,13 @@ def get_datetime_tuple():
 def correct_post_datetime_tz(post):
   post['date'] = post['date'].strftime(DATE_FORMAT)
   return post
+
+def is_valid_uuid(id):
+  try:
+    uuid.UUID(id, version=4)
+  except ValueError:
+    return False
+  return True
 
 def DBtoDict(res):
   descs = [desc[0] for desc in res.description]

@@ -7,12 +7,20 @@ import markdown
 
 import common
 
-def hugo_create_post(name):
+def hugo_create_post(id):
   #TODO: Validate name
   try:
-    subprocess.run(["hugo","new", "posts/%s.md" % name], cwd="./hugo-site", shell=False)
+    subprocess.run(["hugo","new", "posts/%s.md" % id], cwd="./hugo-site", shell=False)
   except SubprocessError as e:
     common.logger.error("Could not create new hugo post file: %s" % e)
+    return False
+  return True
+
+def hugo_delete_post(id):
+  try:
+    subprocess.run(["rm","content/posts/%s.md" % id], cwd="./hugo-site", shell=False)
+  except SubprocessError as e:
+    common.logger.error("Could not delete file: %s" % e)
     return False
   return True
 

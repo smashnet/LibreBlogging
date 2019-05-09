@@ -10,4 +10,4 @@ if [ ! -f "hugo-site/config.toml" ]; then
 fi
 
 # Start editing UI
-python -u editing-ui/src/py/run.py
+python3 -u editing-ui/src/run.py

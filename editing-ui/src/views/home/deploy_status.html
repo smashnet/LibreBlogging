@@ -6,7 +6,7 @@
 
             <div class="page-header">
               <h1 class="page-title">
-                {{ title }}
+                {{ vars.title }}
               </h1>
             </div>
 
@@ -18,7 +18,7 @@
                       <div class="media">
                         <div class="media-body">
                           <div class="media-heading">
-                            <small class="float-right text-muted">Started: {{ deployment_started_ts }}</small>
+                            <small class="float-right text-muted">Started: {{ vars.deployment_started_ts }}</small>
                             <h4>Deployment Status <i class="fas fa-sync-alt"></i></h4>
                             <hr>
                           </div>
