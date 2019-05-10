@@ -27,7 +27,7 @@ RUN tar -xf /tmp/${HUGO_ID}_Linux-64bit.tar.gz -C /tmp \
     && rm -rf /tmp/README.md
 
 # Install other needed packages
-RUN apk add --no-cache git asciidoctor libc6-compat libstdc++ ca-certificates zlib-dev jpeg-dev build-base nodejs npm ncurses
+RUN apk add --no-cache git asciidoctor libc6-compat libstdc++ ca-certificates zlib-dev jpeg-dev build-base nodejs npm ncurses python3-dev
 
 COPY requirements.txt ./
 
@@ -41,6 +41,7 @@ RUN cd editing-ui && npm install && npm run compile
 
 COPY entrypoint.sh ./
 
+ENV PORT 8080
 EXPOSE 8080
 
 VOLUME ["/app/hugo-site"]
