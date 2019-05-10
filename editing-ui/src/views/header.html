@@ -14,7 +14,11 @@
               <div class="row align-items-center">
                 <div class="col-lg-3 ml-auto">
                   <form method="POST" action="/deploy" class="input-icon my-3 my-lg-0">
+                    {% if vars.allow_deploy is defined and vars.allow_deploy is sameas True %}
                     <button type="submit" class="btn btn-primary form-control header-search" tabindex="1">Deploy!</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-secondary form-control header-search" tabindex="1" disabled>Can only deploy on front page</button>
+                    {% endif %}
                   </form>
                 </div>
                 <div class="col-lg order-lg-first">
@@ -33,4 +37,10 @@
               </div>
             </div>
           </div>
+          {% if vars.alert is defined %}
+          <div class="alert {{ vars.alert.category }} alert-dismissible text-center">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            {{ vars.alert.icon|safe }} {{ vars.alert.message }}
+          </div>
+          {% endif %}
         </header>

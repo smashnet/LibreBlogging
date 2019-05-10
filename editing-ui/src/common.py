@@ -36,14 +36,14 @@ HUGO_DIR = "./hugo-site/"
 HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
 
 DATE_FORMAT = "%B %d, %Y - %T %Z"
+TIMEZONE = pytz.timezone('Europe/Berlin')
 
 logger = logging.getLogger("LibreBlogging")
 
 def get_datetime_tuple():
   ts = int(time.time())
-  tz = pytz.timezone('Europe/Berlin') #TODO: Make this variable and add to "Settings" page
   dt_utc = datetime.fromtimestamp(ts)
-  dt_loc = dt_utc.astimezone(tz)
+  dt_loc = dt_utc.astimezone(TIMEZONE)
   return dt_loc, dt_loc.strftime(DATE_FORMAT)
 
 def correct_post_datetime_tz(post):

@@ -20,14 +20,16 @@
                 {% if vars.posts|length > 0 %}
                 {% for post in vars.posts %}
                 <div class="card">
-                  <div class="card-body">
-                    <small class="float-right text-muted">{{ post.date }}</small>
-                    <a class="btn btn-outline-secondary float-left mr-1" href="/posts/{{ post.uuid }}/edit">Edit</a>
+                  <div class="card-header">
+                    <a class="btn btn-outline-secondary float-left mr-1 btn-sm" href="/posts/{{ post.uuid }}/edit">Edit</a>
                     <form method="POST" action="/posts/{{ post.uuid }}">
                       <input type="hidden" name="_method" value="DELETE">
                       <input type="hidden" name="_entry_id" value="{{ post.uuid }}">
-                      <button type="submit" class="btn btn-outline-danger">Delete</button>
+                      <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                     </form>
+                    <small class="ml-auto text-muted">{{ post.date }}</small>
+                  </div>
+                  <div class="card-body">
                     {{ post.post|safe }}
                   </div>
                 </div>

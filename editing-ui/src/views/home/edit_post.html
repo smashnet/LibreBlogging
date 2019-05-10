@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+
+            <div class="page-header">
+              <h1 class="page-title">
+                Edit post
+              </h1>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <ul class="list-group card-list-group">
+                    <li class="list-group-item py-5">
+                      <div class="media">
+                        <div class="media-body">
+                          <div class="media-heading">
+                            <small class="float-right text-muted">{{ vars.date }}</small>
+                            <h4>Post <i class="fas fa-eye"></i></h4>
+                            <hr>
+                          </div>
+                          <form method="POST" action="/posts/{{ vars.uuid }}">
+                            <textarea class="form-control" name="entry_text" rows="8">{{ vars.post | safe }}</textarea>
+                            <hr />
+                            <div class="btn-list text-right">
+                              <a href="/" class="btn btn-secondary">Cancel</a>
+                              <input type="hidden" name="_method" value="PUT">
+                              <input type="hidden" name="_entry_id" value="{{ vars.uuid }}">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
