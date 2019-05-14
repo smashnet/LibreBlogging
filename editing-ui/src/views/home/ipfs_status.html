@@ -13,12 +13,15 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="form-label">Your blog address</label>
-                          <div class="row gutters-sm">
-                            <div class="col-auto">
-                              <a href="{{ vars.ipns_full_address }}">{{ vars.ipns_full_address }}</a>
-                            </div>
-                            <i class="far fa-copy mr-auto align-self-center"></i>
+                          <label class="form-label">Blog address</label>
+                          <div class="input-group">
+                            <input id="ipns-full-address" type="text" class="form-control" value="{{ vars.ipns_full_address }}" readonly>
+                            <span class="input-group-append">
+                              <button class="btn btn-secondary" type="button" onclick="copyIPNSToClipboard();"><i class="far fa-copy"></i></button>
+                            </span>
+                            <span class="input-group-append">
+                              <a class="btn btn-primary" href="{{ vars.ipns_full_address }}">Open</a>
+                            </span>
                           </div>
                         </div>
                       </div>
