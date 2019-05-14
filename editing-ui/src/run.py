@@ -19,7 +19,7 @@ import uuid
 import datetime
 
 import common
-import hugo_actions
+import actions
 
 api = responder.API(
                   title="LibreBlogging Editing UI",
@@ -37,6 +37,11 @@ def render_template(path, template_vars=None):
   template_vars['currentYear'] = now.year
   return api.template(path, vars=template_vars)
 
+@api.on_event('startup')
+async def read_config():
+  common.logger.info("Reading IPFS config file")
+  common.ipfs_config = actions.get_ipfs_config()
+
 @api.route("", default=True)
 def page_not_found(req, resp):
   resp.status_code = api.status_codes.HTTP_404
@@ -45,8 +50,9 @@ def page_not_found(req, resp):
 @api.route("/")
 async def index(req, resp, alert=None):
   template_vars = {}
+  template_vars['url_path'] = "/"
   # Read markdown files with posts
-  template_vars['posts'] = [common.correct_post_datetime_tz(post) for post in hugo_actions.get_posts_from_files()]
+  template_vars['posts'] = [common.correct_post_datetime_tz(post) for post in actions.get_posts_from_files()]
   template_vars['allow_deploy'] = True
   if alert is not None:
     template_vars['alert'] = alert
@@ -67,9 +73,9 @@ class NewBlogpostResource:
     dt_loc, dt_local_string = common.get_datetime_tuple()
     template_vars['entry_date'] = dt_local_string
     # Create new post file in hugo-site
-    hugo_actions.hugo_create_post(template_vars['entry_uuid'])
+    actions.hugo_create_post(template_vars['entry_uuid'])
     # Write content to markdown file
-    hugo_actions.hugo_append_markdown(template_vars['entry_uuid'], entry_text)
+    actions.hugo_append_markdown(template_vars['entry_uuid'], entry_text)
     resp.status_code = api.status_codes.HTTP_201
     await index(req, resp, alert={"category": "alert-success", "message": "New blog post created!"})
 
@@ -81,6 +87,8 @@ class BlogpostResource:
       resp.media = {"status": "400 Bad Request", "message": "Not a valid UUID."}
       return
     #TODO: Return template that shows complete blogpost as single
+    template_vars = {}
+    template_vars['url_path'] = "/posts"
 
   async def on_post(self, req, resp, *, id):
     data = await req.media()
@@ -110,7 +118,7 @@ class BlogpostResource:
       resp.status_code = api.status_codes.HTTP_400
       resp.media = {"status": "400 Bad Request", "message": "Content \"entry_text\" not found in body."}
       return
-    if hugo_actions.hugo_update_post(id, entry_text):
+    if actions.hugo_update_post(id, entry_text):
       await index(req, resp, alert={"category": "alert-success", "message": "Blog post successfully updated!", "icon": '<i class="fas fa-edit"></i>'})
     else:
       await index(req, resp, alert={"category": "alert-warning", "message": "Could not update blog post!", "icon": '<i class="fas fa-exclamation-triangle"></i>'})
@@ -121,7 +129,7 @@ class BlogpostResource:
       resp.media = {"status": "400 Bad Request", "message": "Not a valid UUID."}
       return
     #Delete file of this post
-    if hugo_actions.hugo_delete_post(id):
+    if actions.hugo_delete_post(id):
       await index(req, resp, alert={"category": "alert-success", "message": "Blog post successfully deleted!", "icon": '<i class="fas fa-trash"></i>'})
     else:
       await index(req, resp, alert={"category": "alert-warning", "message": "Could not delete blog post!", "icon": '<i class="fas fa-exclamation-triangle"></i>'})
@@ -133,17 +141,27 @@ class EditBlogpost:
       resp.status_code = api.status_codes.HTTP_400
       resp.media = {"status": "400 Bad Request", "message": "Not a valid UUID."}
       return
-    post = hugo_actions.get_single_post(id, returnMarkdown=True)
+    post = actions.get_single_post(id, returnMarkdown=True)
     post = common.correct_post_datetime_tz(post)
+    post['url_path'] = "/posts"
     resp.html = render_template("home/edit_post.html", post)
 
 @api.route("/settings")
 async def settings(req, resp):
-  resp.html = render_template("home/settings.html")
+  template_vars = {}
+  template_vars['url_path'] = "/settings"
+  resp.html = render_template("home/settings.html", template_vars)
 
 @api.route("/ipfs")
 async def ipfs_status(req, resp):
-  resp.html = render_template("home/coming_soon.html")
+  template_vars = {}
+  template_vars['url_path'] = "/ipfs"
+  try:
+    template_vars['ipns_full_address'] = f"https://ipfs.io/ipns/{common.ipfs_config['Identity']['PeerID']}"
+  except KeyError:
+    common.logging.warning("No IPFS config found.")
+    template_vars['ipns_full_address'] = "No IPFS config"
+  resp.html = render_template("home/ipfs_status.html", template_vars)
 
 @api.route("/deploy")
 class Deployment:
@@ -151,7 +169,8 @@ class Deployment:
     resp.html = render_template("home/coming_soon.html")
 
   async def on_post(self, req, resp):
-    resp.html = render_template("home/coming_soon.html")
+    actions.build_and_deploy()
+    api.redirect(resp, "/", status_code=307)
 
 if __name__ == '__main__':
   api.run()

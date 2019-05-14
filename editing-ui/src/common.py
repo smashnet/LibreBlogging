@@ -35,6 +35,9 @@ except KeyError:
 HUGO_DIR = "./hugo-site/"
 HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
 
+IPFS_DIR = "./ipfs-data/"
+ipfs_config = {}
+
 DATE_FORMAT = "%B %d, %Y - %T %Z"
 TIMEZONE = pytz.timezone('Europe/Berlin')
 

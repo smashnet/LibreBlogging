@@ -2,7 +2,7 @@
           <div class="header py-4">
             <div class="container">
               <div class="d-flex">
-                <a class="header-brand" href="/">LibreBlogging</a>
+                <a class="header-brand" href="/">LibreBlogging - Editing UI</a>
                 <a href="#" class="header-toggler d-flex d-lg-none order-lg-2 ml-auto" data-toggle="collapse" data-target="#headerMenuCollapse">
                   <span class="header-toggler-icon"></span>
                 </a>
@@ -24,13 +24,13 @@
                 <div class="col-lg order-lg-first">
                   <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                     <li class="nav-item">
-                      <a href="/" class="nav-link active"><i class="fas fa-home"></i> Blog</a>
+                      <a href="/" class="nav-link {% if vars.url_path == '/' %}active{% endif %}"><i class="fas fa-home"></i> Blog</a>
                     </li>
                     <li class="nav-item">
-                      <a href="/settings" class="nav-link"><i class="fas fa-sliders-h"></i> Settings</a>
+                      <a href="/settings" class="nav-link {% if vars.url_path == '/settings' %}active{% endif %}"><i class="fas fa-sliders-h"></i> Settings</a>
                     </li>
                     <li class="nav-item">
-                      <a href="/ipfs" class="nav-link"><i class="fas fa-network-wired"></i> IPFS</a>
+                      <a href="/ipfs" class="nav-link {% if vars.url_path == '/ipfs' %}active{% endif %}"><i class="fas fa-network-wired"></i> IPFS</a>
                     </li>
                   </ul>
                 </div>

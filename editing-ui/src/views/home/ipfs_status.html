@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">IPFS Status</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="form-label">Your blog address</label>
+                          <div class="row gutters-sm">
+                            <div class="col-auto">
+                              {{ vars.ipns_full_address }}
+                            </div>
+                            <i class="far fa-copy mr-auto align-self-center"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}

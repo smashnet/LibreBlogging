@@ -4,6 +4,7 @@ from os.path import isfile, join, basename
 from datetime import datetime
 import pytz
 import markdown
+import json
 
 import common
 
@@ -109,4 +110,22 @@ def get_posts_from_files():
   for current_file in files:
     res.append(parse_post_from_file(current_file))
   res.sort(key=lambda post: post['date'], reverse=True)
+  return res
+
+def build_and_deploy():
+  try:
+    subprocess.run(["./build_and_deploy"], cwd="./scripts", shell=False)
+  except SubprocessError as e:
+    common.logger.error(f"Error during build and deploy: {e}")
+    return False
+  return True
+
+def get_ipfs_config():
+  try:
+    with open(f"{common.IPFS_DIR}config", 'r') as f:
+      res = json.load(f)
+      f.close()
+  except:
+    common.logger.warning("Error loading IPFS config file. Is it there?")
+    return False
   return res
