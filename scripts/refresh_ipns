@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Read IPFS hash from file
+HASH=`cat /app/hugo-site/current_hash.txt`
+
+# Update IPNS
+echo "---------- Updating content hash on IPNS ----------"
+echo "ipfs name publish $HASH"
+ipfs name publish $HASH
+
+date +'%s' > /app/ipfs-data/last_ipns_update.txt

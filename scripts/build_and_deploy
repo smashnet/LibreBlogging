@@ -1,0 +1,24 @@
+#!/bin/sh
+
+cd /app
+
+# Clear site
+echo "---------- Clearing site ----------"
+rm -fr /app/hugo-site/public/*
+
+# Build new site
+echo "---------- Building new site ----------"
+cd /app/hugo-site/
+hugo
+
+# Deploy on IPFS
+echo "---------- Adding site to IPFS ----------"
+HASH=`ipfs add -rQ /app/hugo-site/public/`
+echo "Success, new hash: $HASH"
+
+# Write hash to current_hash.txt
+echo $HASH > /app/hugo-site/current_hash.txt
+
+# Update IPNS
+/app/scripts/refresh_ipns
+echo "Done!"

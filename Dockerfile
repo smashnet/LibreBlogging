@@ -51,6 +51,7 @@ RUN mkdir -p $IPFS_PATH \
 
 COPY editing-ui ./editing-ui
 COPY hugo-site-template ./hugo-site-template
+COPY scripts ./scripts
 
 RUN cd editing-ui && npm install && npm run compile
 
