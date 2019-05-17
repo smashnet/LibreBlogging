@@ -169,7 +169,11 @@ class Deployment:
     resp.html = render_template("home/coming_soon.html")
 
   async def on_post(self, req, resp):
-    actions.build_and_deploy()
+    @api.background.task
+    def build_and_deploy():
+      actions.build_and_deploy()
+
+    build_and_deploy()
     api.redirect(resp, "/", status_code=307)
 
 if __name__ == '__main__':
