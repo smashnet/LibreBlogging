@@ -6,5 +6,9 @@ services:
     restart: unless-stopped
     volumes:
       - ./hugo-site:/app/hugo-site
+      - ./ipfs-data:/app/ipfs-data
     ports:
-      - 8080:8080
+      - 9000:9000 # Editing Web-UI
+      - 4001:4001 # IPFS Swarm (Remember port forwarding!)
+      - 5001:5001 # Local IPFS API
+      - 8080:8080 # IPFS Gateway
