@@ -5,7 +5,7 @@ services:
     build: .
     restart: unless-stopped
     volumes:
-      - ./hugo-site:/app/hugo-site/content/posts
+      - ./posts:/app/hugo-site/content/posts
       - ./ipfs-data:/app/ipfs-data
     ports:
       - 9000:9000 # Editing Web-UI
