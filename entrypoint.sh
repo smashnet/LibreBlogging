@@ -2,8 +2,15 @@
 set -e
 user=libreblogging
 repo="$IPFS_PATH"
+UID="${UID:-1000}"
 
 if [ `id -u` -eq 0 ]; then
+  if ! id -u $user > /dev/null 2>&1; then
+    # Create non privileged user with UID from env (default 1000)
+    adduser -D -h /app -u $UID -G users $user
+    # Set user as owner of /app
+    chown -R libreblogging:users /app
+  fi
   echo "Changing user to $user"
   # ensure folder is writable
   su-exec "$user" test -w /app || chown -R -- "$user" /app
@@ -26,16 +33,16 @@ else
   ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 fi
 
-exec ipfs daemon --migrate=true --enable-namesys-pubsub &
+ipfs daemon --migrate=true --enable-namesys-pubsub &
 
 cd /app
 
 # Check if hugo site exists. If not, copy site template.
 if [ ! -f "hugo-site/config.toml" ]; then
   echo "No hugo site found. Copying template!"
-  mkdir hugo-site
+  mkdir -p hugo-site
   cp -r hugo-site-template/* hugo-site
 fi
 
 # Start editing UI
-exec python3 -u editing-ui/src/run.py
+python3 -u editing-ui/src/run.py

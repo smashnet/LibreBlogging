@@ -43,11 +43,11 @@ COPY requirements.txt ./
 # Install python requirements
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
-# Create the fs-repo directory and switch to a non-privileged user.
+# Create required paths
 ENV IPFS_PATH /app/ipfs-data
+ENV POSTS_PATH /app/hugo-site/content/posts
 RUN mkdir -p $IPFS_PATH \
-  && adduser -D -h /app -u 1000 -G users libreblogging \
-  && chown libreblogging:users /app
+  && mkdir -p $POSTS_PATH
 
 COPY entrypoint.sh ./
 

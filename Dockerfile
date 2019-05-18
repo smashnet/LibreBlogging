@@ -43,11 +43,11 @@ COPY requirements.txt ./
 # Install python requirements
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
-# Create the fs-repo directory and switch to a non-privileged user.
+# Create required paths
 ENV IPFS_PATH /app/ipfs-data
+ENV POSTS_PATH /app/hugo-site/content/posts
 RUN mkdir -p $IPFS_PATH \
-  && adduser -D -h /app -u 1000 -G users libreblogging \
-  && chown libreblogging:users /app
+  && mkdir -p $POSTS_PATH
 
 COPY editing-ui ./editing-ui
 COPY hugo-site-template ./hugo-site-template
@@ -71,7 +71,7 @@ EXPOSE 8080
 # Swarm Websockets; must be exposed publicly when the node is listening using the websocket transport (/ipX/.../tcp/8081/ws).
 EXPOSE 8081
 
-VOLUME ["/app/hugo-site/content/posts"]
-VOLUME ["/app/ipfs-data"]
+VOLUME ["$IPFS_PATH"]
+VOLUME ["$POSTS_PATH"]
 
 ENTRYPOINT [ "./entrypoint.sh" ]
