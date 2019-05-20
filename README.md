@@ -18,6 +18,11 @@ It's as simple as
 
 `docker-compose up`
 
+However, make sure that:
+
+* ... you set the UID in the compose file to the UID of your user. Otherwise, there will surely be permission issues with your volumes.
+* ... all ports stated in the compose file are publicly reachable and forwarded to your machine.
+
 ## What is it about?
 
 LibreBlogging is a hassle-free tool that enables you to set up a simple blog on [IPFS](https://ipfs.io) in no time. The benefits of publishing on IPFS are:

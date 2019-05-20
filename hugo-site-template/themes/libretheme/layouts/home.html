@@ -15,14 +15,7 @@
                 <small class="ml-auto text-muted">{{ .Date.Format "Jan 02, 2006 - 15:04:05 MST" }}</small>
               </div>
               <div class="card-body">
-                {{ if .Description }}
-                {{ .Description }}
-                {{ else }}
-                <p>{{ .Summary }}</p>
-                {{ end }}
-                {{ if .Truncated }}
-                <a href="{{ .RelPermalink }}" class="btn btn-outline-secondary">Read More &rarr;</a>
-                {{ end }}
+                {{ .Content }}
               </div>
             </div>
           {{ end }}
