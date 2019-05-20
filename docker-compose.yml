@@ -4,6 +4,8 @@ services:
   libreblogging:
     build: .
     restart: unless-stopped
+    environment:
+      - UID=1000
     volumes:
       - ./posts:/app/hugo-site/content/posts
       - ./ipfs-data:/app/ipfs-data
