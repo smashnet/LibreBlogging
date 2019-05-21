@@ -226,7 +226,9 @@ class Deployment:
       actions.build_and_deploy()
 
     build_and_deploy()
-    api.redirect(resp, "/", status_code=307)
+    #api.redirect(resp, "/", status_code=307)
+    await index(req, resp, alert={"category": "alert-success", "message": "Deployment started... Note, that changes may take a while until visible on your blog!", "icon": '<i class="fas fa-coffee"></i>'})
+
 
 if __name__ == '__main__':
   api.run()
