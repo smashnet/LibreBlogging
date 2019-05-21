@@ -34,6 +34,8 @@ except KeyError:
 
 HUGO_DIR = "./hugo-site/"
 HUGO_POSTS_DIR = HUGO_DIR + "content/posts/"
+HUGO_CONFIG_FILE = f"{HUGO_DIR}/config.toml"
+hugo_config = {}
 
 IPFS_DIR = "./ipfs-data/"
 ipfs_config = {}

@@ -17,6 +17,7 @@ import responder
 import markdown
 import uuid
 import datetime
+import toml
 
 import common
 import actions
@@ -30,6 +31,15 @@ api = responder.API(
                   static_dir="./editing-ui/static",
                   templates_dir="./editing-ui/src/views"
                   )
+
+@api.on_event('startup')
+async def do_startup_stuff():
+  # Read current hugo configuration
+  common.hugo_config = toml.load(common.HUGO_CONFIG_FILE)
+
+@api.on_event('shutdown')
+async def do_cleanup_stuff():
+  return
 
 def render_template(path, template_vars=None):
   template_vars = template_vars if template_vars else {}
@@ -147,10 +157,52 @@ class EditBlogpost:
     resp.html = render_template("home/edit_post.html", post)
 
 @api.route("/settings")
-async def settings(req, resp):
-  template_vars = {}
-  template_vars['url_path'] = "/settings"
-  resp.html = render_template("home/settings.html", template_vars)
+class Settings:
+  async def on_get(self, req, resp, alert=None):
+    template_vars = {}
+    template_vars['url_path'] = "/settings"
+    if alert is not None:
+      template_vars['alert'] = alert
+    template_vars['blog_title'] = common.hugo_config['title']
+    try:
+      template_vars['blog_description'] = common.hugo_config['params']['description']
+    except KeyError:
+      common.logging.warning("No blog description in config.toml")
+      pass
+    template_vars['blog_baseurl'] = common.hugo_config['baseURL']
+    resp.html = render_template("home/settings.html", template_vars)
+
+  async def on_put(self, req, resp):
+    data = await req.media()
+    try:
+      common.hugo_config['title'] = data['title-input']
+      common.hugo_config['params']['description'] = data['description-input']
+      common.hugo_config['baseURL'] = data['baseurl-input']
+    except KeyError:
+      resp.status_code = api.status_codes.HTTP_400
+      resp.media = {"status": "400 Bad Request",
+                    "message": "Required field missing.",
+                    "required": ["title-input", "description-input", "baseurl-input"]}
+      return
+    try:
+      toml.dump(common.hugo_config, open(common.HUGO_CONFIG_FILE, 'w'))
+    except:
+      await self.on_get(req, resp, alert={"category": "alert-warning", "message": "Could not change settings!", "icon": '<i class="fas fa-exclamation-triangle"></i>'})
+      return
+    await self.on_get(req, resp, alert={"category": "alert-success", "message": "Successfully changed settings!", "icon": '<i class="fas fa-edit"></i>'})
+
+  async def on_post(self, req, resp):
+    data = await req.media()
+    try:
+      if data['_method'].lower() in ["put"]:
+        common.logging.info("Found hidden _method field. Handling POST as %s" % data['_method'])
+        if data['_method'].lower() == "put":
+          await self.on_put(req, resp)
+          return
+    except KeyError:
+      pass
+    resp.status_code = api.status_codes.HTTP_400
+    resp.media = {"status": "400 Bad Request", "message": "No _method field found. (Hint: PUT is allowed)"}
 
 @api.route("/ipfs")
 async def ipfs_status(req, resp):

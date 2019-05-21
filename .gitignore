@@ -1,4 +1,5 @@
 *.DS_Store
+docker-compose-dev.yml
 editing-ui/node_modules
 content/
 hugo-site/

@@ -9,48 +9,42 @@
                   <div class="card-header">
                     <h3 class="card-title">Settings</h3>
                     <div class="card-options">
-                      <small class="text-right text-muted">No function, coming soon!</small>
+                      <small class="text-right text-muted"></small>
                     </div>
                   </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6">
 
-                        <div class="form-group">
-                          <label class="form-label">Blog Title</label>
-                          <input type="text" class="form-control" name="title-input" placeholder="Your blog title...">
-                        </div>
+                  <form method="POST" action="/settings">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
 
-                        <div class="form-group">
-                          <label class="form-label">Blog Description <span class="form-label-small">27/100</span></label>
-                          <textarea class="form-control" name="description-input" rows="6" placeholder="Content..">Hmm... this is a nice blog!</textarea>
-                        </div>
-
-                      </div>
-
-                      <div class="col-md-6">
-                        
-                        <div class="form-group">
-                          <label class="form-label">Timezone</label>
-                          <select name="beast" id="select-beast" class="form-control custom-select selectized" tabindex="-1" style="display: none;">
-                            <option value="1" selected="selected">Chuck Testa</option>
-                          </select>
-                          <div class="selectize-control form-control custom-select single">
-                            <div class="selectize-input items full has-options has-items">
-                              <div class="item" data-value="1">Europe/Berlin</div>
-                              <input type="text" autocomplete="off" tabindex="" id="select-beast-selectized" style="width: 4px; opacity: 0; position: absolute; left: -10000px;"></div>
-                              <div class="selectize-dropdown single form-control custom-select" style="display: none; visibility: visible; width: 279.333px; top: 38px; left: 0px;">
-                                <div class="selectize-dropdown-content"><div class="option selected" data-selectable="" data-value="1">Chuck Testa</div>
-                                <div class="option" data-selectable="" data-value="4">Sage Cattabriga-Alosa</div>
-                                <div class="option" data-selectable="" data-value="3">Nikola Tesla</div>
-                              </div>
-                            </div>
+                          <div class="form-group">
+                            <label class="form-label">Blog Title</label>
+                            <input type="text" class="form-control" name="title-input" value="{{ vars.blog_title }}">
+                          </div>
+                          <div class="form-group">
+                            <label class="form-label">Blog Description <span class="form-label-small"></span></label>
+                            <textarea class="form-control" name="description-input" rows="6" placeholder="Your blog description...">{% if vars.blog_description is defined %}{{ vars.blog_description }}{% endif %}</textarea>
                           </div>
                         </div>
 
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="form-label">Base URL</label>
+                            <input type="text" class="form-control" name="baseurl-input" {% if vars.blog_baseurl is defined %}value="{{ vars.blog_baseurl }}"{% else %}placeholder="Your base URL..."{% endif %}>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+
+                    <div class="card-footer text-right">
+                      <div class="d-flex">
+                        <a href="/settings" class="btn btn-link">Cancel</a>
+                        <button type="submit" class="btn btn-primary ml-auto">Send data</button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
