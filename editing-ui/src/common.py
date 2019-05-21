@@ -23,6 +23,11 @@ VERSION = "0.0.1"
 DATA_DIR = os.path.abspath(os.getcwd()) + "/%s-data/" % NAME
 DB_STRING = DATA_DIR + "database.db"
 
+try:
+  VIRTUAL_HOST = os.environ['VIRTUAL_HOST']
+except KeyError:
+  VIRTUAL_HOST = "localhost"
+
 # Further service dependent configuration:
 PHOTO_DIR = DATA_DIR + "img/"
 PHOTO_THUMBS_DIR = DATA_DIR + "thumbs/"

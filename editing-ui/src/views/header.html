@@ -12,7 +12,12 @@
           <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
             <div class="container">
               <div class="row align-items-center">
-                <div class="col-lg-3 ml-auto">
+                <div class="col-lg-2 ml-auto">
+                  <form method="GET" action="/preview">
+                    <button type="submit" class="btn btn-secondary form-control">Show Preview</button>
+                  </form>
+                </div>
+                <div class="col-lg-2">
                   <form method="POST" action="/deploy" class="input-icon my-3 my-lg-0">
                     {% if vars.allow_deploy is defined and vars.allow_deploy is sameas True %}
                     <button type="submit" class="btn btn-primary form-control header-search" tabindex="1">Deploy!</button>

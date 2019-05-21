@@ -45,4 +45,8 @@ if [ ! -f "hugo-site/config.toml" ]; then
 fi
 
 # Start editing UI
-python3 -u editing-ui/src/run.py
+python3 -u editing-ui/src/run.py &
+
+# Start blog preview
+cd /app/hugo-site/public
+python3 -m http.server

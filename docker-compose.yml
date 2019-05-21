@@ -6,11 +6,13 @@ services:
     restart: unless-stopped
     environment:
       - UID=1000
+      - VIRTUAL_HOST=localhost
     volumes:
       - ./posts:/app/hugo-site/content/posts
       - ./ipfs-data:/app/ipfs-data
     ports:
       - 9000:9000 # Editing Web-UI
+      - 9001:8000 # Blog preview
       - 4001:4001 # IPFS Swarm (Remember port forwarding!)
       - 5001:5001 # Local IPFS API
       - 8080:8080 # IPFS Gateway

@@ -12,6 +12,7 @@ License: MIT License
 
 import os, os.path
 import sys
+import subprocess
 
 import responder
 import markdown
@@ -229,6 +230,10 @@ class Deployment:
     #api.redirect(resp, "/", status_code=307)
     await index(req, resp, alert={"category": "alert-success", "message": "Deployment started... Note, that changes may take a while until visible on your blog!", "icon": '<i class="fas fa-coffee"></i>'})
 
+@api.route("/preview")
+async def show_preview(req, resp):
+  subprocess.run(["hugo"], cwd="./hugo-site", shell=False)
+  await api.redirect(resp, f"http://{common.VIRTUAL_HOST}:9001", status_code=307)
 
 if __name__ == '__main__':
   api.run()
