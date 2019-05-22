@@ -12,6 +12,7 @@
           {{ range $paginator.Pages }}
             <div class="card">
               <div class="card-header">
+                <a class="btn btn-outline-secondary btn-sm" href="{{ .RelPermalink }}">Open</a>
                 <small class="ml-auto text-muted">{{ .Date.Format "Jan 02, 2006 - 15:04:05 MST" }}</small>
               </div>
               <div class="card-body">
@@ -19,6 +20,7 @@
               </div>
             </div>
           {{ end }}
+          {{ template "_internal/pagination.html" . }}
         {{ end }}
       </div>
     </div>
