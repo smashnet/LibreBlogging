@@ -1,7 +1,7 @@
 # LibreBlogging
 Ideas and issue status: https://miro.com/app/board/o9J_kxu6Y1o=/
 
-There is still some way to go until we have a first basic functionality. If you just want to _use_ LibreBlogging please check back soon.
+The first basic functionality is there :)
 
 ## Usage
 
@@ -21,7 +21,7 @@ It's as simple as
 However, make sure that:
 
 * ... you set the UID in the compose file to the UID of your user. Otherwise, there will surely be permission issues with your volumes.
-* ... all ports stated in the compose file are publicly reachable and forwarded to your machine.
+* ... at least the IPFS swarm port (default 4001) is publicly reachable and forwarded to your machine.
 
 ## What is it about?
 
