@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd /app/editing-ui
+
+# Install node modules if they are not already there
+if [ ! -d "node_modules" ]; then
+  echo "Could not find node_modules folder -> npm install "
+  npm install
+fi
+
+# npm start
+npm start &

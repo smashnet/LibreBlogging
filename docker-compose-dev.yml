@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  libreblogging:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: libreblogging-dev
+    restart: unless-stopped
+    environment:
+      - UID=1000
+      - VIRTUAL_HOST=localhost
+    volumes:
+      - ./:/app
+    ports:
+      - 9000:9000 # Editing Web-UI
+      - 9001:8000 # Blog preview
+      - 4001:4001 # IPFS Swarm (Remember port forwarding!)
+      - 5001:5001 # Local IPFS API
+      - 8080:8080 # IPFS Gateway

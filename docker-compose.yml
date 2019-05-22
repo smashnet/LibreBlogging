@@ -6,14 +6,58 @@ services:
     restart: unless-stopped
     environment:
       - UID=1000
-      - VIRTUAL_HOST=localhost
+      - VIRTUAL_HOST=localhost       # Domain where editing UI for your blog should be reachable (e.g editor.myblog.com)
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=   # Same as VIRTUAL_HOST
+      - LETSENCRYPT_EMAIL=  # Your email
     volumes:
-      - ./posts:/app/hugo-site/content/posts # Place where markdown files of your posts are located
+      - ./content:/app/hugo-site             # Place where markdown files of your posts are located
       - ./ipfs-staging:/app/ipfs-staging     # Optional place where you can put separate data that you want to deploy on IPFS (has to be done manually using docker-compose exec)
       - ./ipfs-data:/app/ipfs-data           # Place where IPFS puts its config and data blocks
     ports:
-      - 9000:9000 # Editing Web-UI
-      - 9001:8000 # Blog preview
+      #- 9000:9000 # Editing Web-UI (We don't need to expose this as the proxy will forward requests accordingly)
       - 4001:4001 # IPFS Swarm (Remember port forwarding!)
-      - 5001:5001 # Local IPFS API
-      - 8080:8080 # IPFS Gateway
+      #- 5001:5001 # Local IPFS API
+      #- 8080:8080 # IPFS Gateway
+    networks:
+      - proxy-tier
+    depends_on:
+      - proxy
+
+  proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - ./htpasswd:/etc/nginx/htpasswd # If you need password authentication for your editing UI, place a htpasswd file with the same name as VIRTUAL_HOST in this volume
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy-tier
+
+  letsencrypt-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy-tier
+    depends_on:
+      - proxy
+
+volumes:
+  certs:
+  vhost.d:
+  html:
+
+networks:
+  proxy-tier:

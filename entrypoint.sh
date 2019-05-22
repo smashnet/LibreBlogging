@@ -37,6 +37,12 @@ ipfs daemon --migrate=true --enable-namesys-pubsub &
 
 cd /app
 
+# If we have the Dockerfile in /app we probably bound ./ to /app and are in development as Dockerfile is not part of the production image.
+# In this case do npm stuff
+if [ -f "Dockerfile" ]; then
+  ./scripts/dev_post_start_commands
+fi
+
 # Check if hugo site exists. If not, copy site template.
 if [ ! -f "hugo-site/config.toml" ]; then
   echo "No hugo site found. Copying template!"

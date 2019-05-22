@@ -9,18 +9,26 @@ The first basic functionality is there :)
 Use `Dockerfile.dev` to create an image for development on LibreBlogging:
 
 ```shell
-./build_dev_image.sh
-./run_dev_container.sh
+docker-compose -f docker-compose-dev.yml up
 ```
+
+This maps your current directory to /app in the container, so you have direct access.
 
 ### Use LibreBlogging
 It's as simple as
 
-`docker-compose up`
+```shell
+docker-compose up
+```
 
-However, make sure that:
+BUT: Make sure that,
 
-* ... you set the UID in the compose file to the UID of your user. Otherwise, there will surely be permission issues with your volumes.
+* ... you fill up the required fields in the compose file, like:
+  * The UID in the compose file to the UID of your user. Otherwise, there will surely be permission issues with your volumes.
+  * VIRTUAL_HOST
+  * LETSENCRYPT_HOST
+  * LETSENCRYPT_EMAIL
+* ... in ./htpasswd/ is a htpasswd file named after your VIRTUAL_HOST. The default login for localhost is `user: foo` and `pass: bar`
 * ... at least the IPFS swarm port (default 4001) is publicly reachable and forwarded to your machine.
 
 ## What is it about?
