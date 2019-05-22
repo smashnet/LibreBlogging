@@ -37,6 +37,11 @@ api = responder.API(
 async def do_startup_stuff():
   # Read current hugo configuration
   common.hugo_config = toml.load(common.HUGO_CONFIG_FILE)
+  # If params section does not exist, create it
+  try:
+    x = common.hugo_config['params']
+  except KeyError:
+    common.hugo_config['params'] = {}
 
 @api.on_event('shutdown')
 async def do_cleanup_stuff():
@@ -179,10 +184,10 @@ class Settings:
       common.hugo_config['title'] = data['title-input']
       common.hugo_config['params']['description'] = data['description-input']
       common.hugo_config['baseURL'] = data['baseurl-input']
-    except KeyError:
+    except KeyError as e:
       resp.status_code = api.status_codes.HTTP_400
       resp.media = {"status": "400 Bad Request",
-                    "message": "Required field missing.",
+                    "message": f"Required field missing: {e}",
                     "required": ["title-input", "description-input", "baseurl-input"]}
       return
     try:

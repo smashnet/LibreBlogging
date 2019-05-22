@@ -46,9 +46,11 @@ RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 # Create required paths
 ENV IPFS_PATH /app/ipfs-data
 ENV IPFS_STAGING /app/ipfs-staging
+ENV HUGO_SITE /app/hugo-site
 ENV POSTS_PATH /app/hugo-site/content/posts
 RUN mkdir -p $IPFS_PATH \
   && mkdir -p $IPFS_STAGING \
+  && mkdir -p $HUGO_SITE \
   && mkdir -p $POSTS_PATH
 
 COPY editing-ui ./editing-ui
@@ -74,6 +76,6 @@ EXPOSE 8080
 EXPOSE 8081
 
 VOLUME ["$IPFS_PATH"]
-VOLUME ["$POSTS_PATH"]
+VOLUME ["$HUGO_SITE"]
 
 ENTRYPOINT [ "./entrypoint.sh" ]

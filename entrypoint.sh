@@ -41,6 +41,7 @@ cd /app
 if [ ! -f "hugo-site/config.toml" ]; then
   echo "No hugo site found. Copying template!"
   mkdir -p hugo-site
+  mkdir -p hugo-site/content/posts
   cp -r hugo-site-template/* hugo-site
 fi
 
