@@ -45,8 +45,10 @@ RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
 # Create required paths
 ENV IPFS_PATH /app/ipfs-data
+ENV IPFS_STAGING /app/ipfs-staging
 ENV POSTS_PATH /app/hugo-site/content/posts
 RUN mkdir -p $IPFS_PATH \
+  && mkdir -p $IPFS_STAGING \
   && mkdir -p $POSTS_PATH
 
 COPY entrypoint.sh ./

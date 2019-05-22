@@ -8,8 +8,9 @@ services:
       - UID=1000
       - VIRTUAL_HOST=localhost
     volumes:
-      - ./posts:/app/hugo-site/content/posts
-      - ./ipfs-data:/app/ipfs-data
+      - ./posts:/app/hugo-site/content/posts # Place where markdown files of your posts are located
+      - ./ipfs-staging:/app/ipfs-staging     # Optional place where you can put separate data that you want to deploy on IPFS (has to be done manually using docker-compose exec)
+      - ./ipfs-data:/app/ipfs-data           # Place where IPFS puts its config and data blocks
     ports:
       - 9000:9000 # Editing Web-UI
       - 9001:8000 # Blog preview
