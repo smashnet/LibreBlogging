@@ -43,6 +43,9 @@ if [ -f "Dockerfile" ]; then
   ./scripts/dev_post_start_commands
 fi
 
+# Register cron job to refresh IPNS record every 8 hours
+echo "0 0,8,16 * * * /app/scripts/refresh_ipns" | crontab - && crond -f &
+
 # Check if hugo site exists. If not, copy site template.
 if [ ! -f "hugo-site/config.toml" ]; then
   echo "No hugo site found. Copying template!"

@@ -36,7 +36,7 @@ RUN tar -xf /tmp/go-ipfs_v${IPFS_VERSION}_linux-amd64.tar.gz -C /tmp \
     && rm -rf /tmp/go-ipfs
 
 # Install other needed packages
-RUN apk add --no-cache git asciidoctor libc6-compat libstdc++ ca-certificates zlib-dev jpeg-dev build-base nodejs npm ncurses su-exec
+RUN apk add --no-cache git asciidoctor libc6-compat libstdc++ ca-certificates zlib-dev jpeg-dev build-base nodejs npm ncurses su-exec busybox-suid
 
 COPY requirements.txt ./
 
