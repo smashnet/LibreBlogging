@@ -1,11 +1,16 @@
 #!/bin/sh
 
 # Read IPFS hash from file
-HASH=`cat /app/hugo-site/current_hash.txt`
+if [ -f "/app/hugo-site/current_hash.txt" ]; then
+  HASH=`cat /app/hugo-site/current_hash.txt`
 
-# Update IPNS
-echo "---------- Updating content hash on IPNS ----------"
-echo "ipfs name publish $HASH"
-ipfs name publish $HASH
+  # Update IPNS
+  echo "---------- Updating content hash on IPNS ----------"
+  echo "ipfs name publish $HASH"
+  ipfs name publish $HASH
 
-date +'%s' > /app/ipfs-data/last_ipns_update.txt
+  date +'%s' > /app/ipfs-data/last_ipns_update.txt
+else
+  echo "Could not find /app/hugo-site/current_hash.txt. Skipping IPNS renewal."
+  echo "Reason: Probably, deployment has never been triggered yet."
+fi
