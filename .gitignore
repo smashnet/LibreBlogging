@@ -3,6 +3,7 @@ editing-ui/node_modules
 content/
 hugo-site/
 ipfs-data/
+.config/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
