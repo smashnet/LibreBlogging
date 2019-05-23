@@ -6,7 +6,7 @@ The first basic functionality is there :)
 ## Usage
 
 ### Development
-Use `Dockerfile.dev` to create an image for development on LibreBlogging:
+Use `docker-compose-dev.yml` to create an image and run a container for development on LibreBlogging:
 
 ```shell
 docker-compose -f docker-compose-dev.yml up
