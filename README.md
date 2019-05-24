@@ -31,6 +31,13 @@ BUT: Make sure that,
 * ... in ./htpasswd/ is a htpasswd file named after your VIRTUAL_HOST. The default login for localhost is `user: foo` and `pass: bar`
 * ... at least the IPFS swarm port (default 4001) is publicly reachable and forwarded to your machine.
 
+## Keep in mind
+
+* IPFS does not push your content to the network. The integrated IPFS node in LibreBlogging serves your content to anyone requesting it (and those can then serve it as well to others).
+  * That means, __LibreBlogging should be running 24/7 in order to guarantee availability of your content.__
+* IPFS is in an early stage and often lookup times for IPNS records are long.
+* Especially newly set up nodes might take a while until the IPNS link works.
+
 ## What is it about?
 
 LibreBlogging is a hassle-free tool that enables you to set up a simple blog on [IPFS](https://ipfs.io) in no time. The benefits of publishing on IPFS are:
