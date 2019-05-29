@@ -33,7 +33,14 @@ else
   ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 fi
 
-ipfs daemon --migrate=true --enable-namesys-pubsub &
+if [[ -z "$NO_IPFS" ]]; then
+  # NO_IPFS is not set, so we start IPFS
+  ipfs daemon --migrate=true --enable-namesys-pubsub &
+elif [[ "$NO_IPFS" = "false" ]]; then
+  ipfs daemon --migrate=true --enable-namesys-pubsub &
+elif [[ "$NO_IPFS" = "true" ]]; then
+  echo "NO_IPFS is set to -true-. Not starting IPFS..."
+fi
 
 cd /app
 

@@ -10,6 +10,7 @@ services:
     environment:
       - UID=1000
       - VIRTUAL_HOST=localhost
+      - NO_IPFS=false
     volumes:
       - ./:/app
     ports:

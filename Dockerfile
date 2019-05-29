@@ -13,7 +13,7 @@ RUN apk add --no-cache python3 python3-dev&& \
     rm -r /root/.cache
 
 # Install recent Hugo version
-ENV HUGO_VERSION=0.55.5
+ENV HUGO_VERSION=0.55.6
 ENV HUGO_TYPE=_extended
 
 ENV HUGO_ID=hugo${HUGO_TYPE}_${HUGO_VERSION}
