@@ -11,6 +11,7 @@ services:
       - LETSENCRYPT_HOST=   # Same as VIRTUAL_HOST
       - LETSENCRYPT_EMAIL=  # Your email
     volumes:
+      - ./config:/app/config                 # Place for config file libreblogging.json
       - ./content:/app/hugo-site             # Place where markdown files of your posts are located
       - ./ipfs-staging:/app/ipfs-staging     # Optional place where you can put separate data that you want to deploy on IPFS (has to be done manually using docker-compose exec)
       - ./ipfs-data:/app/ipfs-data           # Place where IPFS puts its config and data blocks

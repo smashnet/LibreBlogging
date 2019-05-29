@@ -2,26 +2,27 @@ import subprocess
 from os import listdir
 from os.path import isfile, join, basename
 from datetime import datetime
-import pytz
+import logging
 import markdown
-import json
-import toml
+import pytz
 
-import common
+import config
+
+logger = logging.getLogger("LB - Actions")
 
 def hugo_create_post(id):
   #TODO: Validate name
   try:
     subprocess.run(["hugo","new", "posts/%s.md" % id], cwd="./hugo-site", shell=False)
-  except SubprocessError as e:
-    common.logger.error("Could not create new hugo post file: %s" % e)
+  except subprocess.SubprocessError as e:
+    logger.error("Could not create new hugo post file: %s" % e)
     return False
   return True
 
 def hugo_update_post(id, entry_text):
-  filename = common.HUGO_POSTS_DIR + f"{id}.md"
+  filename = config.libreblogging['hugo']['postsdir'] + f"{id}.md"
   if not isfile(filename):
-    common.logger.warning(f"Could not update blog post. There is no file {filename}")
+    logger.warning(f"Could not update blog post. There is no file {filename}")
     return False
   # Get front matter
   with open(filename, 'r') as f:
@@ -42,19 +43,19 @@ def hugo_update_post(id, entry_text):
   return True
 
 def hugo_delete_post(id):
-  filename = common.HUGO_POSTS_DIR + f"{id}.md"
+  filename = config.libreblogging['hugo']['postsdir'] + f"{id}.md"
   if not isfile(filename):
-    common.logger.warning(f"Could not delete blog post. There is no file {filename}")
+    logger.warning(f"Could not delete blog post. There is no file {filename}")
     return False
   try:
     subprocess.run(["rm", filename] , shell=False)
-  except SubprocessError as e:
-    common.logger.error("Could not delete file: %s" % e)
+  except subprocess.SubprocessError as e:
+    logger.error("Could not delete file: %s" % e)
     return False
   return True
 
 def hugo_append_markdown(md_file_uuid, md_string):
-  with open(common.HUGO_POSTS_DIR + "%s.md" % md_file_uuid, "a") as f:
+  with open(config.libreblogging['hugo']['postsdir'] + "%s.md" % md_file_uuid, "a") as f:
     f.write(md_string)
     f.close()
 
@@ -78,7 +79,7 @@ def parse_post_from_file(filename, returnMarkdown=False):
         post += line
 
     dt_utc = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
-    dt_loc = dt_utc.astimezone(common.TIMEZONE)
+    dt_loc = dt_utc.astimezone(pytz.timezone(config.libreblogging['timezone']))
 
     f.close()
 
@@ -97,8 +98,8 @@ def get_single_post(id, returnMarkdown=False):
   '''
   {"uuid": uuid_string, "date": date_datetime, "post": post_html_string}
   '''
-  filename = join(common.HUGO_POSTS_DIR, f"{id}.md")
-  common.logging.info(f"Opening file: {filename}")
+  filename = join(config.libreblogging['hugo']['postsdir'], f"{id}.md")
+  logger.info(f"Opening file: {filename}")
   return parse_post_from_file(filename, returnMarkdown)
 
 def get_posts_from_files():
@@ -106,7 +107,7 @@ def get_posts_from_files():
   This should look like:
   [{"uuid": uuid_string, "date": date_datetime, "post": post_html_string}, {...}]
   '''
-  files = [join(common.HUGO_POSTS_DIR, f) for f in listdir(common.HUGO_POSTS_DIR) if (isfile(join(common.HUGO_POSTS_DIR, f)) and not f.startswith('.') and f.endswith('.md'))]
+  files = [join(config.libreblogging['hugo']['postsdir'], f) for f in listdir(config.libreblogging['hugo']['postsdir']) if (isfile(join(config.libreblogging['hugo']['postsdir'], f)) and not f.startswith('.') and f.endswith('.md'))]
   res = []
   for current_file in files:
     res.append(parse_post_from_file(current_file))
@@ -116,17 +117,7 @@ def get_posts_from_files():
 def build_and_deploy():
   try:
     subprocess.run(["./build_and_deploy"], cwd="./scripts", shell=False)
-  except SubprocessError as e:
-    common.logger.error(f"Error during build and deploy: {e}")
+  except subprocess.SubprocessError as e:
+    logger.error(f"Error during build and deploy: {e}")
     return False
   return True
-
-def get_ipfs_config():
-  try:
-    with open(f"{common.IPFS_DIR}config", 'r') as f:
-      res = json.load(f)
-      f.close()
-  except:
-    common.logger.warning("Error loading IPFS config file. Is it there?")
-    return False
-  return res

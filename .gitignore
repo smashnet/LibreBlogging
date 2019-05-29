@@ -4,6 +4,7 @@ content/
 hugo-site/
 ipfs-data/
 .config/
+config/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

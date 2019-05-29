@@ -44,11 +44,13 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
 # Create required paths
+ENV CONFIG_PATH /app/config
 ENV IPFS_PATH /app/ipfs-data
 ENV IPFS_STAGING /app/ipfs-staging
 ENV HUGO_SITE /app/hugo-site
 ENV POSTS_PATH /app/hugo-site/content/posts
-RUN mkdir -p $IPFS_PATH \
+RUN mkdir -p $CONFIG_PATH \
+  && mkdir -p $IPFS_PATH \
   && mkdir -p $IPFS_STAGING \
   && mkdir -p $HUGO_SITE \
   && mkdir -p $POSTS_PATH
@@ -75,6 +77,7 @@ EXPOSE 8080
 # Swarm Websockets; must be exposed publicly when the node is listening using the websocket transport (/ipX/.../tcp/8081/ws).
 EXPOSE 8081
 
+VOLUME ["$CONFIG_PATH"]
 VOLUME ["$IPFS_PATH"]
 VOLUME ["$HUGO_SITE"]
 

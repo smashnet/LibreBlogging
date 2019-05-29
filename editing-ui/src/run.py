@@ -10,9 +10,8 @@ GPG-Fingerprint: A757 5741 FD1E 63E8 357D  48E2 3C68 AE70 B2F8 AA17
 License: MIT License
 '''
 
-import os, os.path
-import sys
 import subprocess
+import logging
 
 import responder
 import markdown
@@ -20,13 +19,16 @@ import uuid
 import datetime
 import toml
 
+import config
 import common
 import actions
 
+logger = logging.getLogger("LB - Responder")
+
 api = responder.API(
-                  title="LibreBlogging Editing UI",
-                  version="0.0.1",
-                  description="Web interface to create a static blog",
+                  title=config.libreblogging['name'],
+                  version=config.libreblogging['version'],
+                  description=config.libreblogging['description'],
                   openapi="3.0.2",
                   docs_route="/docs",
                   static_dir="./editing-ui/static",
@@ -35,13 +37,8 @@ api = responder.API(
 
 @api.on_event('startup')
 async def do_startup_stuff():
-  # Read current hugo configuration
-  common.hugo_config = toml.load(common.HUGO_CONFIG_FILE)
-  # If params section does not exist, create it
-  try:
-    x = common.hugo_config['params']
-  except KeyError:
-    common.hugo_config['params'] = {}
+  return
+
 
 @api.on_event('shutdown')
 async def do_cleanup_stuff():
@@ -52,11 +49,6 @@ def render_template(path, template_vars=None):
   now = datetime.datetime.now()
   template_vars['currentYear'] = now.year
   return api.template(path, vars=template_vars)
-
-@api.on_event('startup')
-async def read_config():
-  common.logger.info("Reading IPFS config file")
-  common.ipfs_config = actions.get_ipfs_config()
 
 @api.route("", default=True)
 def page_not_found(req, resp):
@@ -110,7 +102,7 @@ class BlogpostResource:
     data = await req.media()
     try:
       if data['_method'].lower() in ["delete", "put", "patch"]:
-        common.logging.info("Found hidden _method field. Handling POST as %s" % data['_method'])
+        logger.info("Found hidden _method field. Handling POST as %s" % data['_method'])
         if data['_method'].lower() == "delete":
           await self.on_delete(req, resp, id=id)
           return
@@ -169,21 +161,21 @@ class Settings:
     template_vars['url_path'] = "/settings"
     if alert is not None:
       template_vars['alert'] = alert
-    template_vars['blog_title'] = common.hugo_config['title']
+    template_vars['blog_title'] = config.hugo['title']
     try:
-      template_vars['blog_description'] = common.hugo_config['params']['description']
+      template_vars['blog_description'] = config.hugo['params']['description']
     except KeyError:
-      common.logging.warning("No blog description in config.toml")
+      logger.warning("No blog description in config.toml")
       pass
-    template_vars['blog_baseurl'] = common.hugo_config['baseURL']
+    template_vars['blog_baseurl'] = config.hugo['baseURL']
     resp.html = render_template("home/settings.html", template_vars)
 
   async def on_put(self, req, resp):
     data = await req.media()
     try:
-      common.hugo_config['title'] = data['title-input']
-      common.hugo_config['params']['description'] = data['description-input']
-      common.hugo_config['baseURL'] = data['baseurl-input']
+      config.hugo['title'] = data['title-input']
+      config.hugo['params']['description'] = data['description-input']
+      config.hugo['baseURL'] = data['baseurl-input']
     except KeyError as e:
       resp.status_code = api.status_codes.HTTP_400
       resp.media = {"status": "400 Bad Request",
@@ -191,7 +183,7 @@ class Settings:
                     "required": ["title-input", "description-input", "baseurl-input"]}
       return
     try:
-      toml.dump(common.hugo_config, open(common.HUGO_CONFIG_FILE, 'w'))
+      toml.dump(config.hugo, open(config.libreblogging['hugo']['configfile'], 'w'))
     except:
       await self.on_get(req, resp, alert={"category": "alert-warning", "message": "Could not change settings!", "icon": '<i class="fas fa-exclamation-triangle"></i>'})
       return
@@ -201,7 +193,7 @@ class Settings:
     data = await req.media()
     try:
       if data['_method'].lower() in ["put"]:
-        common.logging.info("Found hidden _method field. Handling POST as %s" % data['_method'])
+        logger.info("Found hidden _method field. Handling POST as %s" % data['_method'])
         if data['_method'].lower() == "put":
           await self.on_put(req, resp)
           return
@@ -215,9 +207,9 @@ async def ipfs_status(req, resp):
   template_vars = {}
   template_vars['url_path'] = "/ipfs"
   try:
-    template_vars['ipns_full_address'] = f"https://ipfs.io/ipns/{common.ipfs_config['Identity']['PeerID']}"
+    template_vars['ipns_full_address'] = f"https://ipfs.io/ipns/{config.ipfs['Identity']['PeerID']}"
   except KeyError:
-    common.logging.warning("No IPFS config found.")
+    logger.warning("No IPFS config found.")
     template_vars['ipns_full_address'] = "No IPFS config"
   resp.html = render_template("home/ipfs_status.html", template_vars)
 
@@ -238,7 +230,7 @@ class Deployment:
 @api.route("/preview")
 async def show_preview(req, resp):
   subprocess.run(["hugo"], cwd="./hugo-site", shell=False)
-  await api.redirect(resp, f"http://{common.VIRTUAL_HOST}:9001", status_code=307)
+  await api.redirect(resp, f"http://{config.libreblogging['env']['VIRTUAL_HOST']}:9001", status_code=307)
 
 if __name__ == '__main__':
   api.run()
