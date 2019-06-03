@@ -25,11 +25,13 @@ try:
 except FileExistsError as e:
   logger.info("Config directory is already there.")
 
+libreblogging = {}
+
 if os.path.isfile(configfile):
   # Config file exists, read it!
   try:
     with open(configfile, 'r') as cfile:
-      libreblogging = json.load(configfile)
+      libreblogging = json.load(cfile)
   except:
     logger.warning(f"Error reading config file: {configfile}")
 else:
@@ -59,6 +61,7 @@ else:
 try:
   libreblogging['env']['VIRTUAL_HOST'] = os.environ['VIRTUAL_HOST']
 except KeyError:
+  libreblogging['env'] = {}
   libreblogging['env']['VIRTUAL_HOST'] = "localhost"
 
 # Read hugo config
