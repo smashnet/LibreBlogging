@@ -39,7 +39,6 @@ api = responder.API(
 async def do_startup_stuff():
   return
 
-
 @api.on_event('shutdown')
 async def do_cleanup_stuff():
   return
