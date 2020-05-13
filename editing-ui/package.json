@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/smashnet/LibreBlogging#readme",
   "dependencies": {
-    "faucet-pipeline-js": ">=1.1.1",
-    "faucet-pipeline-sass": ">=1.1.0",
-    "@fortawesome/fontawesome-free": "^5.8.1"
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "faucet-pipeline-js": "^2.1.2",
+    "faucet-pipeline-sass": "^1.4.0"
   }
 }

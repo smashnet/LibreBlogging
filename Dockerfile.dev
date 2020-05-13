@@ -13,7 +13,7 @@ RUN apk add --no-cache python3 python3-dev&& \
     rm -r /root/.cache
 
 # Install recent Hugo version
-ENV HUGO_VERSION=0.55.6
+ENV HUGO_VERSION=0.70.0
 ENV HUGO_TYPE=_extended
 
 ENV HUGO_ID=hugo${HUGO_TYPE}_${HUGO_VERSION}
@@ -27,7 +27,7 @@ RUN tar -xf /tmp/${HUGO_ID}_Linux-64bit.tar.gz -C /tmp \
     && rm -rf /tmp/README.md
 
 # Install recent IPFS version
-ENV IPFS_VERSION=0.4.21
+ENV IPFS_VERSION=0.5.1
 
 ADD https://github.com/ipfs/go-ipfs/releases/download/v${IPFS_VERSION}/go-ipfs_v${IPFS_VERSION}_linux-amd64.tar.gz /tmp
 RUN tar -xf /tmp/go-ipfs_v${IPFS_VERSION}_linux-amd64.tar.gz -C /tmp \

@@ -49,7 +49,7 @@ def render_template(path, template_vars=None):
   template_vars['currentYear'] = now.year
   return api.template(path, vars=template_vars)
 
-@api.route("", default=True)
+@api.route("/error", default=True)
 def page_not_found(req, resp):
   resp.status_code = api.status_codes.HTTP_404
   resp.html = render_template("404.html")
@@ -229,7 +229,7 @@ class Deployment:
 @api.route("/preview")
 async def show_preview(req, resp):
   subprocess.run(["hugo"], cwd="./hugo-site", shell=False)
-  await api.redirect(resp, f"http://{config.libreblogging['env']['VIRTUAL_HOST']}:9001", status_code=307)
+  api.redirect(resp, f"http://{config.libreblogging['env']['VIRTUAL_HOST']}:9001", status_code=307)
 
 if __name__ == '__main__':
   api.run()
